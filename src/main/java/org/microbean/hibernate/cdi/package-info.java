@@ -1,6 +1,6 @@
 /* -*- mode: Java; c-basic-offset: 2; indent-tabs-mode: nil; coding: utf-8-unix -*-
  *
- * Copyright © 2018 microBean.
+ * Copyright © 2018–2019 microBean.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,15 @@
  */
 
 /**
- * Provides classes and interfaces for working with Hibernate in CDI.
+ * Provides classes and interfaces for working with <a
+ * href="http://hibernate.org/orm/" target="_parent">Hibernate</a> in
+ * CDI.
  *
  * @author <a href="https://about.me/lairdnelson"
  * target="_parent">Laird Nelson</a>
+ *
+ * @see org.microbean.hibernate.cdi.CDISEJtaPlatformProvider
+ *
+ * @see org.microbean.hibernate.cdi.CDISEJtaPlatform
  */
 package org.microbean.hibernate.cdi;

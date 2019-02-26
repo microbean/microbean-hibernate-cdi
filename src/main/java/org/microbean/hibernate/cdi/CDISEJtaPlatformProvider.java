@@ -1,6 +1,6 @@
 /* -*- mode: Java; c-basic-offset: 2; indent-tabs-mode: nil; coding: utf-8-unix -*-
  *
- * Copyright © 2018 microBean.
+ * Copyright © 2018–2019 microBean.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,42 @@
  */
 package org.microbean.hibernate.cdi;
 
+import java.util.ServiceLoader; // for javadoc only
+
 import javax.enterprise.inject.spi.CDI;
 
 import org.hibernate.engine.transaction.jta.platform.spi.JtaPlatform;
 import org.hibernate.engine.transaction.jta.platform.spi.JtaPlatformProvider;
 
+/**
+ * A {@link JtaPlatformProvider} that uses a {@link CDI} instance to
+ * {@linkplain CDI#select(Class, Annotation...) provide} a {@link
+ * JtaPlatform}.
+ *
+ * <p>Normally this class is instantiated by the {@linkplain
+ * ServiceLoader Java service provider infrastructure}.</p>
+ *
+ * @author <a href="https://about.me/lairdnelson"
+ * target="_parent">Laird Nelson</a>
+ *
+ * @see JtaPlatform
+ *
+ * @see CDISEJtaPlatform
+ */
 public class CDISEJtaPlatformProvider implements JtaPlatformProvider {
-  
+
+  /**
+   * Creates a new {@link CDISEJtaPlatformProvider}.
+   */
   public CDISEJtaPlatformProvider() {
     super();
   }
 
+  /**
+   * Returns a non-{@code null} {@link JtaPlatform}.
+   *
+   * @return a non-{@code null} {@link JtaPlatform}
+   */
   @Override
   public JtaPlatform getProvidedJtaPlatform() {
     return CDI.current().select(JtaPlatform.class).get();

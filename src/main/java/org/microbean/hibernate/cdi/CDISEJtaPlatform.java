@@ -1,6 +1,6 @@
 /* -*- mode: Java; c-basic-offset: 2; indent-tabs-mode: nil; coding: utf-8-unix -*-
  *
- * Copyright © 2018 microBean.
+ * Copyright © 2018–2019 microBean.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,18 @@ import org.hibernate.engine.transaction.jta.platform.internal.AbstractJtaPlatfor
 import org.hibernate.engine.transaction.jta.platform.spi.JtaPlatform;
 import org.hibernate.engine.transaction.jta.platform.spi.JtaPlatformProvider;
 
+/**
+ * An {@link AbstractJtaPlatform} that is an {@link ApplicationScoped}
+ * CDI managed bean that supplies {@link TransactionManager} and
+ * {@link UserTransaction} instances that are supplied to it at
+ * {@linkplain #CDISEJtaPlatform(TransactionManager, UserTransaction)
+ * construction time}.
+ *
+ * @author <a href="https://about.me/lairdnelson"
+ * target="_parent">Laird Nelson</a>
+ *
+ * @see AbstractJtaPlatform
+ */
 @ApplicationScoped
 public class CDISEJtaPlatform extends AbstractJtaPlatform {
 
@@ -42,7 +54,19 @@ public class CDISEJtaPlatform extends AbstractJtaPlatform {
   private final UserTransaction userTransaction;
   
   private static final long serialVersionUID = 1L;
-  
+
+  /**
+   * Creates a new {@link CDISEJtaPlatform}.
+   *
+   * @param transactionManager the {@link TransactionManager} to use;
+   * must not be {@code null}
+   *
+   * @param userTransaction the {@link UserTransaction} to use; must
+   * not be {@code null}
+   *
+   * @exception NullPointerException if either {@code
+   * transactionManager} or {@code userTransaction} is {@code null}
+   */
   @Inject
   public CDISEJtaPlatform(final TransactionManager transactionManager,
                           final UserTransaction userTransaction) {
@@ -51,16 +75,45 @@ public class CDISEJtaPlatform extends AbstractJtaPlatform {
     this.userTransaction = Objects.requireNonNull(userTransaction);
   }
 
+  /**
+   * Throws an {@link UnsupportedOperationException} when invoked.
+   *
+   * @return (not applicable)
+   *
+   * @exception UnsupportedOperationException when invoked
+   */
   @Override
   protected JndiService jndiService() {
     throw new UnsupportedOperationException();
 	}
-  
+
+  /**
+   * Returns the {@link UserTransaction} instance supplied at
+   * {@linkplain #CDISEJtaPlatform(TransactionManager,
+   * UserTransaction) construction time}.
+   *
+   * <p>This method never returns {@code null}.</p>
+   *
+   * @return a non-{@code null} {@link UserTransaction}
+   *
+   * @see #CDISEJtaPlatform(TransactionManager, UserTransaction)
+   */
   @Override
   protected UserTransaction locateUserTransaction() {
     return this.userTransaction;
   }
 
+  /**
+   * Returns the {@link TransactionManager} instance supplied at
+   * {@linkplain #CDISEJtaPlatform(TransactionManager,
+   * UserTransaction) construction time}.
+   *
+   * <p>This method never returns {@code null}.</p>
+   *
+   * @return a non-{@code null} {@link TransactionManager}
+   *
+   * @see #CDISEJtaPlatform(TransactionManager, UserTransaction)
+   */
   @Override
   protected TransactionManager locateTransactionManager() {
     return this.transactionManager;
